@@ -11,6 +11,7 @@ public class OptiTrack : MonoBehaviour {
 	const int PORT = 7643;
 
     public DebugInfo debugInfo;
+	public PreTouch pretouch;
 	public OptiTrack2Coor opti2coor;
 
     private List<Vector3> posList = new List<Vector3>();
@@ -53,6 +54,7 @@ public class OptiTrack : MonoBehaviour {
 				case "dot":
 					dot = 50f * new Vector3(-float.Parse(args[1]), float.Parse(args[2]), float.Parse(args[3]));
 					dot = opti2coor.ToCoor(dot);
+					pretouch.Move(dot);
 					debugInfo.Log("dot", dot.x.ToString("f2") + ',' + dot.y.ToString("f2") + ',' + dot.z.ToString("f2"));
 					break;
 			}
