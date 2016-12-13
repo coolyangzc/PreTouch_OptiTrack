@@ -7,8 +7,6 @@ public class PreTouch : MonoBehaviour {
 	public Image fullScreen;
 	public RawImage cursor;
 
-	Transform trans;
-
 	float screenWidth, screenHeight, ratio_x, ratio_y, size;
 	const float PHONE_HEIGHT = 11.3f;
 	const float PHONE_WIDTH = 6.4f;
@@ -20,6 +18,7 @@ public class PreTouch : MonoBehaviour {
 	void Start() {
 		screenWidth = fullScreen.rectTransform.rect.width;
 		screenHeight = fullScreen.rectTransform.rect.height;
+		Screen.sleepTimeout = SleepTimeout.NeverSleep;
 	}
 	
 	public void Move(Vector3 dot) {
