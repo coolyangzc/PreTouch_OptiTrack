@@ -5,10 +5,12 @@ using System.Collections;
 public class PreTouch : MonoBehaviour {
 
 	public Image fullScreen;
-	public RawImage cursor;
-	public Button homeButton;
+	public RawImage cursor, pic;
+	public Button prevButton, nextButton;
+	public GameObject buttons;
 
 	float screenWidth, screenHeight, ratio_x, ratio_y, size;
+	int picID = 0;
 
 	const float PHONE_HEIGHT = 11.3f;
 	const float PHONE_WIDTH = 6.4f;
@@ -16,8 +18,8 @@ public class PreTouch : MonoBehaviour {
 	const float TO_SCREEN_DIST = 2.0f;
 	const float AWAY_SCREEN_DIST = 8.0f;
 
-	const float SUSPEND_TIME = 0.5f;
-	const float DISPLAY_TIME = 1.0f;
+	const float SUSPEND_TIME = 0.1f;
+	const float DISPLAY_TIME = 0.5f;
 	const float SUSPEND_DIST = 2.0f;
 
 	public enum Phase
@@ -36,6 +38,8 @@ public class PreTouch : MonoBehaviour {
 		screenWidth = fullScreen.rectTransform.rect.width;
 		screenHeight = fullScreen.rectTransform.rect.height;
 		Screen.sleepTimeout = SleepTimeout.NeverSleep;
+		prevButton.onClick.AddListener(PrevPic);
+		nextButton.onClick.AddListener(NextPic);
 	}
 	
 	public void Move(Vector3 dot) {
@@ -51,6 +55,16 @@ public class PreTouch : MonoBehaviour {
 			size = (AWAY_SCREEN_DIST - dot.z) / (AWAY_SCREEN_DIST - TO_SCREEN_DIST);
 	}
 
+	void PrevPic() {
+		picID = (picID + 7) % 8;
+		pic.texture = (Texture)Resources.Load("Pictures/" + picID.ToString(), typeof(Texture));
+	}
+
+	void NextPic() {
+		picID = (picID + 1) % 8;
+		pic.texture = (Texture)Resources.Load("Pictures/" + picID.ToString(), typeof(Texture));
+	}
+
 	void Update() {
 		cursor.transform.localPosition = new Vector3(ratio_x * screenWidth, ratio_y * screenHeight, 0f);
 		cursor.transform.localScale = new Vector3(size, size, size);
@@ -64,7 +78,7 @@ public class PreTouch : MonoBehaviour {
 			if (size > 0 && Vector2.Distance(now, pre) <= SUSPEND_DIST) {
 				if (Time.time - t >= SUSPEND_TIME) {
 					phase = Phase.Display;
-					homeButton.transform.localPosition = new Vector3(0.4f * screenWidth, ratio_y * screenHeight, 0f);
+					buttons.transform.localPosition = new Vector3(0.44f * screenWidth, ratio_y * screenHeight, 0f);
 					pre = now;
 					t = Time.time;
 				}
@@ -76,7 +90,7 @@ public class PreTouch : MonoBehaviour {
 			}
 			else if (Time.time - t >= DISPLAY_TIME) {
 				phase = Phase.None;
-				homeButton.transform.localPosition = new Vector3(-1.0f * screenWidth, -1.0f * screenHeight, 0f);
+				buttons.transform.localPosition = new Vector3(-1.0f * screenWidth, -1.0f * screenHeight, 0f);
 			}
 
 		}
