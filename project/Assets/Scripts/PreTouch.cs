@@ -17,7 +17,7 @@ public class PreTouch : MonoBehaviour {
 	const float PHONE_WIDTH = 6.4f;
 	const float PHONE_DELTA = 5.0f;
 	const float TO_SCREEN_DIST = 2.0f;
-	const float AWAY_SCREEN_DIST = 8.0f;
+	const float AWAY_SCREEN_DIST = 6.0f;
 
 	const float SUSPEND_TIME = 0.2f;
 	const float DISPLAY_TIME = 0.5f;
